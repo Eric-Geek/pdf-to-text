@@ -28,13 +28,34 @@
             <div class="card card-m">
                 <h2 class="text-title-m">控制面板</h2>
                 
+                <!-- 处理模式切换 -->
+                <div class="mode-switcher">
+                    <label class="mode-option">
+                        <input type="radio" name="mode" value="single" checked>
+                        <span class="mode-label">单文件模式</span>
+                    </label>
+                    <label class="mode-option">
+                        <input type="radio" name="mode" value="batch">
+                        <span class="mode-label">批量处理</span>
+                    </label>
+                </div>
+                
                 <!-- 文件选择 -->
                 <div class="form-group">
-                    <label for="file" class="file-label">
+                    <label for="file" class="file-label" id="single-file-label">
                         <input type="file" id="file" accept="application/pdf" class="file-input">
                         <span class="btn btn-secondary">选择 PDF 文件</span>
                     </label>
+                    
+                    <label for="batch-files" class="file-label" id="batch-file-label" style="display: none;">
+                        <input type="file" id="batch-files" accept="application/pdf" multiple class="file-input">
+                        <span class="btn btn-secondary">选择多个 PDF 文件</span>
+                    </label>
+                    
                     <p id="file-info" class="file-info text-small"></p>
+                    
+                    <!-- 批量文件列表 -->
+                    <div id="batch-list" class="batch-list" style="display: none;"></div>
                 </div>
 
                 <!-- 选项控制 -->
@@ -86,16 +107,98 @@
                     <p id="status" class="status-text text-small" aria-live="polite">等待选择文件...</p>
                 </div>
 
+                <!-- 文本处理选项 -->
+                <div class="form-section">
+                    <h3 class="text-title-s">文本处理选项</h3>
+                    
+                    <div class="form-group checkbox-group">
+                        <label for="autoFormat" class="checkbox-label">
+                            <input type="checkbox" id="autoFormat" checked>
+                            <span class="text-small">自动格式化</span>
+                        </label>
+                    </div>
+                    
+                    <div class="form-group checkbox-group">
+                        <label for="mergeParagraphs" class="checkbox-label">
+                            <input type="checkbox" id="mergeParagraphs" checked>
+                            <span class="text-small">合并段落</span>
+                        </label>
+                    </div>
+                    
+                    <div class="form-group checkbox-group">
+                        <label for="removeDuplicateSpaces" class="checkbox-label">
+                            <input type="checkbox" id="removeDuplicateSpaces" checked>
+                            <span class="text-small">去除多余空格</span>
+                        </label>
+                    </div>
+                    
+                    <div class="form-group checkbox-group">
+                        <label for="fixPunctuation" class="checkbox-label">
+                            <input type="checkbox" id="fixPunctuation" checked>
+                            <span class="text-small">修正标点符号</span>
+                        </label>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="lineBreakThreshold" class="text-small">段落阈值</label>
+                        <input type="number" id="lineBreakThreshold" class="input" value="1.5" min="1" max="3" step="0.1">
+                    </div>
+                </div>
+
+                <!-- 导出选项 -->
+                <div class="form-section">
+                    <h3 class="text-title-s">导出选项</h3>
+                    
+                    <div class="form-group">
+                        <label for="exportFormat" class="text-small">导出格式</label>
+                        <select id="exportFormat" class="select">
+                            <option value="txt">纯文本 (.txt)</option>
+                            <option value="markdown">Markdown (.md)</option>
+                            <option value="json">JSON (.json)</option>
+                            <option value="html">HTML (.html)</option>
+                            <option value="csv">CSV (.csv)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group checkbox-group" id="batch-export-option" style="display: none;">
+                        <label for="mergeExport" class="checkbox-label">
+                            <input type="checkbox" id="mergeExport" checked>
+                            <span class="text-small">合并导出为单个文件</span>
+                        </label>
+                    </div>
+                </div>
+
                 <!-- 导出操作 -->
                 <div class="button-group">
-                    <button id="download" class="btn btn-secondary" disabled>导出 TXT</button>
-                    <button id="copy" class="btn btn-secondary" disabled>复制全部</button>
+                    <button id="download" class="btn btn-secondary" disabled>
+                        <span class="btn-icon">⬇</span>
+                        导出文件
+                    </button>
+                    <button id="copy" class="btn btn-secondary" disabled>
+                        <span class="btn-icon">📋</span>
+                        复制全部
+                    </button>
+                    <button id="formatText" class="btn btn-secondary" disabled>
+                        <span class="btn-icon">🔧</span>
+                        重新格式化
+                    </button>
                 </div>
             </div>
 
             <!-- 右侧结果区域 -->
             <div class="card card-l">
-                <h2 class="text-title-m">识别结果</h2>
+                <div class="result-header">
+                    <h2 class="text-title-m">识别结果</h2>
+                    <div class="result-stats">
+                        <span id="charCount" class="text-small">0 字符</span>
+                        <span id="wordCount" class="text-small">0 词</span>
+                    </div>
+                </div>
+                
+                <!-- 批量处理标签页 -->
+                <div id="batch-tabs" class="batch-tabs" style="display: none;"></div>
+                
+                <!-- 结果文本区域 -->
                 <textarea id="output" class="output-textarea" rows="20" placeholder="识别结果将显示在这里..." readonly></textarea>
             </div>
         </main>

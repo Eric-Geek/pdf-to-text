@@ -403,3 +403,314 @@ body {
 .toast.warning {
     background-color: var(--orange1);
 }
+
+.form-section {
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid var(--Black7);
+}
+
+.form-section h3 {
+    margin-bottom: 16px;
+}
+
+.text-title-s {
+    font-size: 14px;
+    line-height: 22px;
+    letter-spacing: 0;
+    color: var(--Black2);
+    font-weight: 500;
+}
+
+/* 数字输入框 */
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* 结果区域头部 */
+.result-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.result-stats {
+    display: flex;
+    gap: 16px;
+    color: var(--Black3);
+}
+
+.result-stats span {
+    display: flex;
+    align-items: center;
+}
+
+.result-stats span::before {
+    content: '';
+    width: 4px;
+    height: 4px;
+    background-color: var(--Yellow1);
+    border-radius: 50%;
+    margin-right: 8px;
+}
+
+/* 格式化按钮特殊样式 */
+#formatText {
+    background-color: var(--Yellow3);
+    color: var(--Black2);
+}
+
+#formatText:hover:not(:disabled) {
+    background-color: var(--Yellow2);
+}
+
+/* 响应式调整 */
+@media (max-width: 1024px) {
+    .result-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+}
+
+.mode-switcher {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 20px;
+    padding: 12px;
+    background-color: var(--Black9);
+    border-radius: 8px;
+}
+
+.mode-option {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.mode-option input[type="radio"] {
+    margin-right: 8px;
+}
+
+.mode-label {
+    font-size: 14px;
+    color: var(--Black2);
+    font-weight: 500;
+}
+
+/* 批量文件列表 */
+.batch-list {
+    max-height: 200px;
+    overflow-y: auto;
+    margin-top: 12px;
+    padding: 8px;
+    background-color: var(--Black9);
+    border-radius: 8px;
+}
+
+.batch-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    margin-bottom: 4px;
+    background-color: var(--White);
+    border-radius: 6px;
+    font-size: 12px;
+}
+
+.batch-item-name {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--Black2);
+}
+
+.batch-item-status {
+    margin-left: 8px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    white-space: nowrap;
+}
+
+.batch-item-status.pending {
+    background-color: var(--Black8);
+    color: var(--Black3);
+}
+
+.batch-item-status.processing {
+    background-color: var(--Yellow3);
+    color: var(--Black2);
+}
+
+.batch-item-status.success {
+    background-color: var(--green2);
+    color: var(--green1);
+}
+
+.batch-item-status.error {
+    background-color: var(--red2);
+    color: var(--red1);
+}
+
+/* 批量处理标签页 */
+.batch-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid var(--Black7);
+    overflow-x: auto;
+}
+
+.batch-tab {
+    padding: 8px 16px;
+    background-color: var(--Black0);
+    border: none;
+    border-radius: 8px 8px 0 0;
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--Black3);
+    white-space: nowrap;
+    transition: all 0.2s ease;
+}
+
+.batch-tab:hover {
+    background-color: var(--Black8);
+}
+
+.batch-tab.active {
+    background-color: var(--Yellow3);
+    color: var(--Black1);
+}
+
+/* 按钮图标 */
+.btn-icon {
+    margin-right: 6px;
+    font-size: 16px;
+}
+
+/* 导出格式选择 */
+#exportFormat {
+    font-weight: 500;
+}
+
+/* 表单区块标题 */
+.form-section {
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid var(--Black7);
+}
+
+.form-section h3 {
+    margin-bottom: 16px;
+}
+
+.text-title-s {
+    font-size: 14px;
+    line-height: 22px;
+    letter-spacing: 0;
+    color: var(--Black2);
+    font-weight: 500;
+}
+
+/* 数字输入框 */
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* 结果区域头部 */
+.result-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.result-stats {
+    display: flex;
+    gap: 16px;
+    color: var(--Black3);
+}
+
+.result-stats span {
+    display: flex;
+    align-items: center;
+}
+
+.result-stats span::before {
+    content: '';
+    width: 4px;
+    height: 4px;
+    background-color: var(--Yellow1);
+    border-radius: 50%;
+    margin-right: 8px;
+}
+
+/* 格式化按钮特殊样式 */
+#formatText {
+    background-color: var(--Yellow3);
+    color: var(--Black2);
+}
+
+#formatText:hover:not(:disabled) {
+    background-color: var(--Yellow2);
+}
+
+/* 滚动条样式 */
+.batch-list::-webkit-scrollbar,
+.output-textarea::-webkit-scrollbar {
+    width: 8px;
+}
+
+.batch-list::-webkit-scrollbar-track,
+.output-textarea::-webkit-scrollbar-track {
+    background: var(--Black9);
+    border-radius: 4px;
+}
+
+.batch-list::-webkit-scrollbar-thumb,
+.output-textarea::-webkit-scrollbar-thumb {
+    background: var(--Black7);
+    border-radius: 4px;
+}
+
+.batch-list::-webkit-scrollbar-thumb:hover,
+.output-textarea::-webkit-scrollbar-thumb:hover {
+    background: var(--Black6);
+}
+
+/* 响应式调整 */
+@media (max-width: 1024px) {
+    .result-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    
+    .batch-tabs {
+        flex-wrap: nowrap;
+        -webkit-overflow-scrolling: touch;
+    }
+}
+
+@media (max-width: 640px) {
+    .mode-switcher {
+        flex-direction: column;
+        gap: 8px;
+    }
+}
