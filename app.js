@@ -38,7 +38,6 @@ const elements = {
     removeDuplicateSpaces: document.getElementById('removeDuplicateSpaces'),
     fixPunctuation: document.getElementById('fixPunctuation'),
     lineBreakThreshold: document.getElementById('lineBreakThreshold'),
-    formatText: document.getElementById('formatText'),
     charCount: document.getElementById('charCount'),
     wordCount: document.getElementById('wordCount'),
     // 新增元素
@@ -136,31 +135,11 @@ class ExportManager {
     }
     
     exportAsHTML(data, fileName) {
-        let html = `<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>${fileName}</title>
-    <style>
-        body { font-family: system-ui, -apple-system, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
-        h1 { color: #333; }
-        .meta { color: #666; font-size: 14px; }
-        .content { white-space: pre-wrap; line-height: 1.6; }
-        .file-section { margin: 30px 0; padding: 20px; background: #f5f5f5; border-radius: 8px; }
-    </style>
-</head>
-<body>
-    <h1>${fileName}</h1>
-    <p class="meta">导出时间：${new Date().toLocaleString()}</p>
-    `;
+        let html = `<!DOCTYPE html>\n<html lang="zh-CN">\n<head>\n    <meta charset="UTF-8">\n    <meta name="viewport" content="width=device-width, initial-scale=1.0">\n    <title>${fileName}</title>\n    <style>\n        body { font-family: system-ui, -apple-system, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }\n        h1 { color: #333; }\n        .meta { color: #666; font-size: 14px; }\n        .content { white-space: pre-wrap; line-height: 1.6; }\n        .file-section { margin: 30px 0; padding: 20px; background: #f5f5f5; border-radius: 8px; }\n    </style>\n</head>\n<body>\n    <h1>${fileName}</h1>\n    <p class="meta">导出时间：${new Date().toLocaleString()}</p>\n    `;
         
         if (Array.isArray(data)) {
             data.forEach(item => {
-                html += `<div class="file-section">
-                    <h2>${item.fileName}</h2>
-                    <pre class="content">${this.escapeHtml(item.content)}</pre>
-                </div>`;
+                html += `<div class="file-section">\n                    <h2>${item.fileName}</h2>\n                    <pre class="content">${this.escapeHtml(item.content)}</pre>\n                </div>`;
             });
         } else {
             html += `<pre class="content">${this.escapeHtml(data)}</pre>`;
@@ -238,12 +217,7 @@ class BatchProcessor {
     }
     
     updateBatchList() {
-        const listHtml = this.queue.map((file, index) => `
-            <div class="batch-item" data-index="${index}">
-                <span class="batch-item-name" title="${file.name}">${file.name}</span>
-                <span class="batch-item-status pending">等待处理</span>
-            </div>
-        `).join('');
+        const listHtml = this.queue.map((file, index) => `\n            <div class="batch-item" data-index="${index}">\n                <span class="batch-item-name" title="${file.name}">${file.name}</span>\n                <span class="batch-item-status pending">等待处理</span>\n            </div>\n        `).join('');
         
         elements.batchList.innerHTML = listHtml;
         elements.fileInfo.textContent = `已选择 ${this.queue.length} 个文件`;
@@ -261,7 +235,7 @@ class BatchProcessor {
     getStatusText(status) {
         const texts = {
             pending: '等待处理',
-            processing: '处理中...',
+            processing: '处理中...', 
             success: '完成',
             error: '失败'
         };
@@ -462,10 +436,10 @@ class TextProcessor {
 
     fixPunctuation(text) {
         // 中文标点后不应有空格
-        text = text.replace(/([，。！？；：、""''（）【】《》])\s+/g, '$1');
+        text = text.replace(/([，。！？；：、""'（）【】《》])\s+/g, '$1');
         
         // 英文标点后应有空格
-        text = text.replace(/([,\.!?;:])\s*([a-zA-Z])/g, '$1 $2');
+        text = text.replace(/([,.!?;:])\s*([a-zA-Z])/g, '$1 $2');
         
         // 修正引号
         text = text.replace(/[""]/g, '"');
@@ -714,45 +688,6 @@ function updateTextStats() {
     elements.wordCount.textContent = `${wordCount} 词`;
 }
 
-// ===== 重新格式化文本 =====
-function reformatText() {
-    if (rawResults.length === 0 && currentMode === 'single') {
-        showToast('没有原始数据可以重新格式化', 'warning');
-        return;
-    }
-    
-    if (currentMode === 'batch') {
-        // 批量模式：重新格式化当前显示的文件
-        if (!currentBatchFile) {
-            showToast('请先选择要格式化的文件', 'warning');
-            return;
-        }
-        
-        const result = batchProcessor.results.get(currentBatchFile);
-        if (!result) return;
-        
-        // 这里需要从原始结果重新处理，但批量模式下我们没有保存原始结果
-        // 作为简化，我们对当前文本进行基本格式化
-        const processor = new TextProcessor({
-            autoFormat: elements.autoFormat.checked,
-            mergeParagraphs: elements.mergeParagraphs.checked,
-            removeDuplicateSpaces: elements.removeDuplicateSpaces.checked,
-            fixPunctuation: elements.fixPunctuation.checked,
-            lineBreakThreshold: parseFloat(elements.lineBreakThreshold.value)
-        });
-        
-        const reformatted = processor.process(elements.output.value);
-        elements.output.value = reformatted;
-        updateTextStats();
-        showToast('文本已重新格式化', 'success');
-        
-    } else {
-        // 单文件模式：从原始结果重新处理
-        displayResults();
-        showToast('文本已重新格式化', 'success');
-    }
-}
-
 // ===== 事件监听 =====
 elements.file.addEventListener('change', handleFileSelect);
 elements.batchFilesInput.addEventListener('change', handleBatchFileSelect);
@@ -760,7 +695,6 @@ elements.start.addEventListener('click', startProcessing);
 elements.cancel.addEventListener('click', cancelProcessing);
 elements.download.addEventListener('click', downloadResult);
 elements.copy.addEventListener('click', copyAll);
-elements.formatText.addEventListener('click', reformatText);
 elements.output.addEventListener('input', updateTextStats);
 
 // ===== 文件选择处理 =====
@@ -826,7 +760,6 @@ async function startSingleProcessing() {
     elements.start.disabled = true;
     elements.cancel.disabled = false;
     elements.file.disabled = true;
-    elements.formatText.disabled = true;
     
     const startTime = Date.now();
     const lang = elements.lang.value;
@@ -924,7 +857,6 @@ async function startSingleProcessing() {
         elements.file.disabled = false;
         elements.download.disabled = rawResults.length === 0;
         elements.copy.disabled = rawResults.length === 0;
-        elements.formatText.disabled = rawResults.length === 0;
         
         const elapsedTime = ((Date.now() - startTime) / 1000).toFixed(1);
         
@@ -952,7 +884,6 @@ async function startBatchProcessing() {
     elements.start.disabled = true;
     elements.cancel.disabled = false;
     elements.batchFilesInput.disabled = true;
-    elements.formatText.disabled = true;
     
     const startTime = Date.now();
     
@@ -973,7 +904,6 @@ async function startBatchProcessing() {
         elements.batchFilesInput.disabled = false;
         elements.download.disabled = results.length === 0;
         elements.copy.disabled = results.length === 0;
-        elements.formatText.disabled = results.length === 0;
         
         const elapsedTime = ((Date.now() - startTime) / 1000).toFixed(1);
         const successCount = results.filter(r => r.success).length;
@@ -1090,7 +1020,6 @@ function resetState() {
     elements.cancel.disabled = true;
     elements.download.disabled = true;
     elements.copy.disabled = true;
-    elements.formatText.disabled = true;
     
     setProgress(0, 100);
     updateTextStats();

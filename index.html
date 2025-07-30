@@ -25,7 +25,7 @@
         <!-- 主内容区域 -->
         <main class="main-content">
             <!-- 左侧控制面板 -->
-            <div class="card card-m">
+            <div class="card">
                 <h2 class="text-title-m">控制面板</h2>
                 
                 <!-- 处理模式切换 -->
@@ -61,7 +61,7 @@
                 <!-- 选项控制 -->
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="lang" class="text-small">OCR 语言</label>
+                        <label for="lang">OCR 语言</label>
                         <select id="lang" class="select">
                             <option value="chi_sim">简体中文</option>
                             <option value="eng">English</option>
@@ -70,7 +70,7 @@
                     </div>
                     
                     <div class="form-group">
-                        <label for="scale" class="text-small">OCR 分辨率</label>
+                        <label for="scale">OCR 分辨率</label>
                         <select id="scale" class="select">
                             <option value="1.5">1.5x</option>
                             <option value="2" selected>2x</option>
@@ -81,14 +81,14 @@
 
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="pages" class="text-small">指定页码</label>
+                        <label for="pages">指定页码</label>
                         <input type="text" id="pages" class="input" placeholder="如: 1-3,5,8">
                     </div>
                     
                     <div class="form-group checkbox-group">
                         <label for="preferText" class="checkbox-label">
                             <input type="checkbox" id="preferText" checked>
-                            <span class="text-small">优先文本提取</span>
+                            <span>优先文本提取</span>
                         </label>
                     </div>
                 </div>
@@ -104,43 +104,43 @@
                     <div id="progress" class="progress-container">
                         <div id="bar" class="progress-bar"></div>
                     </div>
-                    <p id="status" class="status-text text-small" aria-live="polite">等待选择文件...</p>
+                    <p id="status" class="status-text" aria-live="polite">等待选择文件...</p>
                 </div>
 
                 <!-- 文本处理选项 -->
-                <div class="form-section">
+                <div class="form-section" style="display: none;">
                     <h3 class="text-title-s">文本处理选项</h3>
                     
                     <div class="form-group checkbox-group">
                         <label for="autoFormat" class="checkbox-label">
                             <input type="checkbox" id="autoFormat" checked>
-                            <span class="text-small">自动格式化</span>
+                            <span>自动格式化</span>
                         </label>
                     </div>
                     
                     <div class="form-group checkbox-group">
                         <label for="mergeParagraphs" class="checkbox-label">
                             <input type="checkbox" id="mergeParagraphs" checked>
-                            <span class="text-small">合并段落</span>
+                            <span>合并段落</span>
                         </label>
                     </div>
                     
                     <div class="form-group checkbox-group">
                         <label for="removeDuplicateSpaces" class="checkbox-label">
                             <input type="checkbox" id="removeDuplicateSpaces" checked>
-                            <span class="text-small">去除多余空格</span>
+                            <span>去除多余空格</span>
                         </label>
                     </div>
                     
                     <div class="form-group checkbox-group">
                         <label for="fixPunctuation" class="checkbox-label">
                             <input type="checkbox" id="fixPunctuation" checked>
-                            <span class="text-small">修正标点符号</span>
+                            <span>修正标点符号</span>
                         </label>
                     </div>
                     
-                    <div class="form-group">
-                        <label for="lineBreakThreshold" class="text-small">段落阈值</label>
+                    <div class="form-group" style="display: none;">
+                        <label for="lineBreakThreshold">段落阈值</label>
                         <input type="number" id="lineBreakThreshold" class="input" value="1.5" min="1" max="3" step="0.1">
                     </div>
                 </div>
@@ -150,7 +150,7 @@
                     <h3 class="text-title-s">导出选项</h3>
                     
                     <div class="form-group">
-                        <label for="exportFormat" class="text-small">导出格式</label>
+                        <label for="exportFormat">导出格式</label>
                         <select id="exportFormat" class="select">
                             <option value="txt">纯文本 (.txt)</option>
                             <option value="markdown">Markdown (.md)</option>
@@ -163,24 +163,20 @@
                     <div class="form-group checkbox-group" id="batch-export-option" style="display: none;">
                         <label for="mergeExport" class="checkbox-label">
                             <input type="checkbox" id="mergeExport" checked>
-                            <span class="text-small">合并导出为单个文件</span>
+                            <span>合并导出为单个文件</span>
                         </label>
                     </div>
                 </div>
 
                 <!-- 导出操作 -->
                 <div class="button-group">
-                    <button id="download" class="btn btn-secondary" disabled>
+                    <button id="download" class="btn btn-primary" disabled>
                         <span class="btn-icon">⬇</span>
                         导出文件
                     </button>
                     <button id="copy" class="btn btn-secondary" disabled>
                         <span class="btn-icon">📋</span>
                         复制全部
-                    </button>
-                    <button id="formatText" class="btn btn-secondary" disabled>
-                        <span class="btn-icon">🔧</span>
-                        重新格式化
                     </button>
                 </div>
             </div>
