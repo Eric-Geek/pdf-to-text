@@ -1,0 +1,405 @@
+/* styles.css */
+
+/* ===== CSS 变量定义 ===== */
+:root {
+    /* 中性色（文字/边框/背景） */
+    --Black1: rgba(0,0,0,1.0);   /* 主标题 */
+    --Black2: rgba(0,0,0,0.8);   /* 副标题/按钮Hover */
+    --Black3: rgba(0,0,0,0.5);   /* 正文 */
+    --Black4: rgba(0,0,0,0.3);   /* 说明 */
+    --Black5: rgba(0,0,0,0.2);   /* 禁用文字 */
+    
+    /* Border */
+    --Black6: rgba(0,0,0,0.1);   /* 板块边框 / 一般组件分割线(0.5px) */
+    --Black7: rgba(0,0,0,0.08);  /* 卡片/组件边框 / 区域分割线(1px) */
+    
+    /* Background */
+    --Black8: rgba(0,0,0,0.06);  /* 卡片bg / 按钮focus bg */
+    --Black9: rgba(0,0,0,0.04);  /* 区域背景色 */
+    --Black0: rgba(0,0,0,0.02);  /* 二级按钮 normal bg */
+    --White:  #FFFFFF;           /* 主bg / 二级按钮 hover bg */
+    
+    /* 强调色 */
+    --Yellow1: #FEC33A; /* 营销色 normal/focus */
+    --Yellow2: #FFDC8B; /* 营销色 hover */
+    --Yellow3: #FFFAEE; /* 营销色背景 */
+    
+    --PrimaryBtn: var(--Black1);        /* 主按钮 bg */
+    --PrimaryBtnHover: var(--Black2);   /* 主按钮 hover bg */
+    
+    /* 状态色 */
+    --orange1: #FE963A; /* 提示 normal/focus */
+    --orange2: #FFFAEE; /* 提示 hover bg */
+    --red1:    #FF4C4C; /* 警告/错误 normal/focus */
+    --red2:    #FFEDEE; /* 警告/错误 hover bg */
+    --green1:  #36EA60; /* 成功 normal/focus */
+    --green2:  #EBFDEF; /* 成功 hover bg */
+    --blue1:   #368AEA; /* 链接 normal/focus / 焦点 */
+    --blue2:   #ECF3FD; /* 链接 hover bg / 焦点 bg */
+    
+    /* 渐变 */
+    --grad1: linear-gradient(180deg, #FFE9B6 0%, #FFD471 100%);
+    --grad2: linear-gradient(180deg, #FFF4D9 0%, #FFFFFF 100%);
+    --grad3: linear-gradient(180deg, rgba(0,0,0,0.0) 0%, rgba(0,0,0,0.8) 100%);
+    
+    /* 系统字体栈 */
+    --font-stack: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* ===== 基础重置 ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-stack);
+    font-size: 14px;
+    line-height: 22px;
+    color: var(--Black3);
+    background-color: var(--White);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ===== 排版工具类 ===== */
+.text-small {
+    font-size: 12px;
+    line-height: 20px;
+    letter-spacing: 0;
+    color: var(--Black4);
+}
+
+.text-body {
+    font-size: 14px;
+    line-height: 22px;
+    letter-spacing: 0;
+    color: var(--Black3);
+}
+
+.text-title-m {
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: 0;
+    color: var(--Black2);
+    font-weight: 500;
+}
+
+.text-title-l {
+    font-size: 18px;
+    line-height: 28px;
+    letter-spacing: -0.01em;
+    color: var(--Black2);
+    font-weight: 500;
+}
+
+.text-title-xl {
+    font-size: 28px;
+    line-height: 40px;
+    letter-spacing: -0.01em;
+    color: var(--Black1);
+    font-weight: 600;
+}
+
+/* ===== 圆角工具类 ===== */
+.radius-4 { border-radius: 4px; }
+.radius-8 { border-radius: 8px; }
+.radius-12 { border-radius: 12px; }
+.radius-16 { border-radius: 16px; }
+.radius-20 { border-radius: 20px; }
+.radius-round { border-radius: 999px; }
+
+/* ===== 布局容器 ===== */
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ===== 头部 ===== */
+.header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.header h1 {
+    margin-bottom: 8px;
+}
+
+/* ===== 主内容区域 ===== */
+.main-content {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    flex: 1;
+}
+
+@media (min-width: 1024px) {
+    .main-content {
+        grid-template-columns: 420px 1fr;
+    }
+}
+
+/* ===== 卡片样式 ===== */
+.card {
+    background-color: var(--Black8);
+    border: 1px solid var(--Black7);
+}
+
+.card-m {
+    padding: 20px;
+    border-radius: 12px;
+}
+
+.card-l {
+    padding: 24px;
+    border-radius: 16px;
+}
+
+.card h2 {
+    margin-bottom: 20px;
+}
+
+/* ===== 表单元素 ===== */
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 6px;
+}
+
+/* 文件选择 */
+.file-input {
+    display: none;
+}
+
+.file-label {
+    display: inline-block;
+    cursor: pointer;
+}
+
+.file-info {
+    margin-top: 8px;
+    color: var(--Black3);
+}
+
+/* 输入框和下拉框 */
+.input, .select {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid var(--Black7);
+    border-radius: 8px;
+    background-color: var(--White);
+    font-size: 14px;
+    line-height: 22px;
+    color: var(--Black2);
+    transition: all 0.2s ease;
+}
+
+.input:focus, .select:focus {
+    outline: none;
+    border-color: var(--Yellow1);
+    background-color: var(--White);
+}
+
+.input::placeholder {
+    color: var(--Black4);
+}
+
+/* 复选框 */
+.checkbox-group {
+    display: flex;
+    align-items: center;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.checkbox-label input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    margin-right: 8px;
+    cursor: pointer;
+}
+
+/* ===== 按钮样式 ===== */
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 999px;
+    font-size: 14px;
+    line-height: 22px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.btn-primary {
+    background-color: var(--PrimaryBtn);
+    color: var(--White);
+}
+
+.btn-primary:hover:not(:disabled) {
+    background-color: var(--PrimaryBtnHover);
+}
+
+.btn-primary:focus-visible {
+    outline: 2px solid var(--blue1);
+    outline-offset: 2px;
+}
+
+.btn-secondary {
+    background-color: var(--Black0);
+    color: var(--Black2);
+}
+
+.btn-secondary:hover:not(:disabled) {
+    background-color: var(--White);
+    border: 1px solid var(--Black7);
+}
+
+.btn-secondary:focus-visible {
+    outline: 2px solid var(--blue1);
+    outline-offset: 2px;
+}
+
+.button-group {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+/* ===== 进度条 ===== */
+.progress-section {
+    margin-bottom: 20px;
+}
+
+.progress-container {
+    width: 100%;
+    height: 8px;
+    background-color: var(--Black9);
+    border-radius: 999px;
+    overflow: hidden;
+    margin-bottom: 8px;
+}
+
+.progress-bar {
+    height: 100%;
+    background: var(--grad1);
+    border-radius: 999px;
+    width: 0%;
+    transition: width 0.3s ease;
+}
+
+.status-text {
+    color: var(--Black3);
+}
+
+/* ===== 结果区域 ===== */
+.output-textarea {
+    width: 100%;
+    min-height: 400px;
+    padding: 16px;
+    border: 1px solid var(--Black7);
+    border-radius: 8px;
+    background-color: var(--White);
+    font-family: 'Consolas', 'Monaco', monospace;
+    font-size: 14px;
+    line-height: 22px;
+    color: var(--Black2);
+    resize: vertical;
+}
+
+.output-textarea:focus {
+    outline: none;
+    border-color: var(--Yellow1);
+}
+
+/* ===== 页脚 ===== */
+.footer {
+    text-align: center;
+    padding: 20px 0;
+    margin-top: 40px;
+    border-top: 1px solid var(--Black7);
+}
+
+/* ===== 响应式调整 ===== */
+@media (max-width: 640px) {
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .button-group {
+        flex-wrap: wrap;
+    }
+    
+    .btn {
+        flex: 1;
+        min-width: 120px;
+    }
+}
+
+/* ===== 加载状态 ===== */
+.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+/* ===== Toast 提示（可选） ===== */
+.toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 12px 20px;
+    border-radius: 8px;
+    color: var(--White);
+    font-size: 14px;
+    line-height: 22px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    transform: translateY(100px);
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.toast.show {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.toast.success {
+    background-color: var(--green1);
+}
+
+.toast.error {
+    background-color: var(--red1);
+}
+
+.toast.warning {
+    background-color: var(--orange1);
+}

@@ -1,0 +1,115 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF to Text (OCR) - 纯前端文字识别工具</title>
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- PDF.js CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    
+    <!-- Tesseract.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5.0.2/dist/tesseract.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- 顶部标题区域 -->
+        <header class="header">
+            <h1 id="title" class="text-title-xl">PDF to Text (OCR)</h1>
+            <p id="subtitle" class="text-body">纯前端·不上传文件·支持中英 OCR</p>
+        </header>
+
+        <!-- 主内容区域 -->
+        <main class="main-content">
+            <!-- 左侧控制面板 -->
+            <div class="card card-m">
+                <h2 class="text-title-m">控制面板</h2>
+                
+                <!-- 文件选择 -->
+                <div class="form-group">
+                    <label for="file" class="file-label">
+                        <input type="file" id="file" accept="application/pdf" class="file-input">
+                        <span class="btn btn-secondary">选择 PDF 文件</span>
+                    </label>
+                    <p id="file-info" class="file-info text-small"></p>
+                </div>
+
+                <!-- 选项控制 -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="lang" class="text-small">OCR 语言</label>
+                        <select id="lang" class="select">
+                            <option value="chi_sim">简体中文</option>
+                            <option value="eng">English</option>
+                            <option value="eng+chi_sim">中英混合</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="scale" class="text-small">OCR 分辨率</label>
+                        <select id="scale" class="select">
+                            <option value="1.5">1.5x</option>
+                            <option value="2" selected>2x</option>
+                            <option value="3">3x</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="pages" class="text-small">指定页码</label>
+                        <input type="text" id="pages" class="input" placeholder="如: 1-3,5,8">
+                    </div>
+                    
+                    <div class="form-group checkbox-group">
+                        <label for="preferText" class="checkbox-label">
+                            <input type="checkbox" id="preferText" checked>
+                            <span class="text-small">优先文本提取</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- 操作按钮 -->
+                <div class="button-group">
+                    <button id="start" class="btn btn-primary" disabled>开始处理</button>
+                    <button id="cancel" class="btn btn-secondary" disabled>取消</button>
+                </div>
+
+                <!-- 进度显示 -->
+                <div class="progress-section">
+                    <div id="progress" class="progress-container">
+                        <div id="bar" class="progress-bar"></div>
+                    </div>
+                    <p id="status" class="status-text text-small" aria-live="polite">等待选择文件...</p>
+                </div>
+
+                <!-- 导出操作 -->
+                <div class="button-group">
+                    <button id="download" class="btn btn-secondary" disabled>导出 TXT</button>
+                    <button id="copy" class="btn btn-secondary" disabled>复制全部</button>
+                </div>
+            </div>
+
+            <!-- 右侧结果区域 -->
+            <div class="card card-l">
+                <h2 class="text-title-m">识别结果</h2>
+                <textarea id="output" class="output-textarea" rows="20" placeholder="识别结果将显示在这里..." readonly></textarea>
+            </div>
+        </main>
+
+        <!-- 底部页脚 -->
+        <footer class="footer">
+            <p class="text-small">隐私声明：所有文件处理均在您的浏览器本地完成，不会上传到任何服务器</p>
+        </footer>
+    </div>
+
+    <script>
+        // 设置 PDF.js worker
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    </script>
+    <script src="app.js"></script>
+</body>
+</html>
