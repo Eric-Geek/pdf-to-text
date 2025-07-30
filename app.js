@@ -317,9 +317,10 @@ class BatchProcessor {
                     isOCR: true
                 });
                 
-                // 更新进度
-                const progress = ((index + i / pdf.numPages) / this.queue.length) * 100;
-                setProgress(progress, 100);
+                // 更新进度 - 修复批量处理进度条计算
+                const fileProgress = i / pdf.numPages; // 当前文件的进度 (0-1)
+                const totalProgress = (index + fileProgress) / this.queue.length; // 总体进度 (0-1)
+                setProgress(totalProgress * 100, 100);
             }
         } finally {
             if (worker) {
