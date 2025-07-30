@@ -64,7 +64,7 @@ function updateUIMode() {
         elements.batchExportOption.style.display = 'block';
         elements.pages.disabled = true;
         elements.pages.value = '';
-        elements.pages.placeholder = '批量模式不支持指定页码';
+        elements.pages.placeholder = 'Batch mode does not support page range';
     } else {
         document.getElementById('single-file-label').style.display = 'block';
         document.getElementById('batch-file-label').style.display = 'none';
@@ -72,7 +72,7 @@ function updateUIMode() {
         elements.batchTabs.style.display = 'none';
         elements.batchExportOption.style.display = 'none';
         elements.pages.disabled = false;
-        elements.pages.placeholder = '如: 1-3,5,8';
+        elements.pages.placeholder = 'e.g: 1-3,5,8';
     }
     
     // 重置状态
@@ -105,7 +105,7 @@ class ExportManager {
     
     exportAsMarkdown(data, fileName) {
         let content = `# ${fileName}\n\n`;
-        content += `> 导出时间：${new Date().toLocaleString()}\n\n`;
+        content += `> Export time: ${new Date().toLocaleString()}\n\n`;
         
         if (Array.isArray(data)) {
             data.forEach(item => {
@@ -135,7 +135,7 @@ class ExportManager {
     }
     
     exportAsHTML(data, fileName) {
-        let html = `<!DOCTYPE html>\n<html lang="zh-CN">\n<head>\n    <meta charset="UTF-8">\n    <meta name="viewport" content="width=device-width, initial-scale=1.0">\n    <title>${fileName}</title>\n    <style>\n        body { font-family: system-ui, -apple-system, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }\n        h1 { color: #333; }\n        .meta { color: #666; font-size: 14px; }\n        .content { white-space: pre-wrap; line-height: 1.6; }\n        .file-section { margin: 30px 0; padding: 20px; background: #f5f5f5; border-radius: 8px; }\n    </style>\n</head>\n<body>\n    <h1>${fileName}</h1>\n    <p class="meta">导出时间：${new Date().toLocaleString()}</p>\n    `;
+        let html = `<!DOCTYPE html>\n<html lang="en">\n<head>\n    <meta charset="UTF-8">\n    <meta name="viewport" content="width=device-width, initial-scale=1.0">\n    <title>${fileName}</title>\n    <style>\n        body { font-family: system-ui, -apple-system, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }\n        h1 { color: #333; }\n        .meta { color: #666; font-size: 14px; }\n        .content { white-space: pre-wrap; line-height: 1.6; }\n        .file-section { margin: 30px 0; padding: 20px; background: #f5f5f5; border-radius: 8px; }\n    </style>\n</head>\n<body>\n    <h1>${fileName}</h1>\n    <p class="meta">Export time: ${new Date().toLocaleString()}</p>\n    `;
         
         if (Array.isArray(data)) {
             data.forEach(item => {
@@ -155,7 +155,7 @@ class ExportManager {
         const rows = Array.isArray(data) ? data : [{ fileName, content: data }];
         
         rows.forEach(item => {
-            const pages = item.content.split(/=== 第 (\d+) 页.*? ===/);
+            const pages = item.content.split(/=== Page (\d+).*? ===/);
             for (let i = 1; i < pages.length; i += 2) {
                 const pageNum = pages[i];
                 const content = pages[i + 1] ? pages[i + 1].trim() : '';
@@ -174,7 +174,7 @@ class ExportManager {
     }
     
     convertToMarkdown(text) {
-        return text.replace(/=== 第 (\d+) 页.*? ===/g, '### 第 $1 页');
+        return text.replace(/=== Page (\d+).*? ===/g, '### Page $1');
     }
     
     escapeHtml(text) {
@@ -191,7 +191,7 @@ class ExportManager {
         a.download = fileName;
         a.click();
         URL.revokeObjectURL(url);
-        showToast(`已导出为 ${fileName}`, 'success');
+        showToast(`Exported as ${fileName}`, 'success');
     }
 }
 
@@ -217,10 +217,10 @@ class BatchProcessor {
     }
     
     updateBatchList() {
-        const listHtml = this.queue.map((file, index) => `\n            <div class="batch-item" data-index="${index}">\n                <span class="batch-item-name" title="${file.name}">${file.name}</span>\n                <span class="batch-item-status pending">等待处理</span>\n            </div>\n        `).join('');
+        const listHtml = this.queue.map((file, index) => `\n            <div class="batch-item" data-index="${index}">\n                <span class="batch-item-name" title="${file.name}">${file.name}</span>\n                <span class="batch-item-status pending">Pending</span>\n            </div>\n        `).join('');
         
         elements.batchList.innerHTML = listHtml;
-        elements.fileInfo.textContent = `已选择 ${this.queue.length} 个文件`;
+        elements.fileInfo.textContent = `Selected ${this.queue.length} files`;
     }
     
     updateItemStatus(index, status, text = '') {
@@ -234,10 +234,10 @@ class BatchProcessor {
     
     getStatusText(status) {
         const texts = {
-            pending: '等待处理',
-            processing: '处理中...', 
-            success: '完成',
-            error: '失败'
+            pending: 'Pending',
+            processing: 'Processing...', 
+            success: 'Completed',
+            error: 'Failed'
         };
         return texts[status] || status;
     }
@@ -263,7 +263,7 @@ class BatchProcessor {
             console.error(`处理文件 ${file.name} 失败:`, error);
             this.results.set(file.name, {
                 fileName: file.name,
-                content: `处理失败: ${error.message}`,
+                content: `Processing failed: ${error.message}`,
                 success: false
             });
             this.updateItemStatus(this.currentIndex, 'error');
@@ -278,7 +278,7 @@ class BatchProcessor {
         const loadingTask = pdfjsLib.getDocument({ data: arrayBuffer });
         const pdf = await loadingTask.promise;
         
-        status(`正在处理 ${file.name} (${index + 1}/${this.queue.length})`);
+        status(`Processing ${file.name} (${index + 1}/${this.queue.length})`);
         
         const results = [];
         let worker = null;
@@ -301,6 +301,11 @@ class BatchProcessor {
                             text: pageText,
                             isOCR: false
                         });
+                        
+                        // 更新进度 - 修复批量处理进度条计算
+                        const fileProgress = i / pdf.numPages; // 当前文件的进度 (0-1)
+                        const totalProgress = (index + fileProgress) / this.queue.length; // 总体进度 (0-1)
+                        setProgress(totalProgress * 100, 100);
                         continue;
                     }
                 }
@@ -338,7 +343,7 @@ class BatchProcessor {
         });
         
         const processedTexts = results.map(result => {
-            const header = `=== 第 ${result.pageNum} 页${result.isOCR ? ' (OCR)' : ''} ===`;
+            const header = `=== Page ${result.pageNum}${result.isOCR ? ' (OCR)' : ''} ===`;
             const text = processor.process(result.text);
             return `${header}\n${text}`;
         });
@@ -598,7 +603,7 @@ async function createOCRWorker(lang) {
         logger: m => {
             if (m.status === 'recognizing text') {
                 const progress = Math.round(m.progress * 100);
-                status(`OCR 识别中... ${progress}%`);
+                status(`OCR recognizing... ${progress}%`);
             }
         }
     });
@@ -625,7 +630,7 @@ async function ocrPage(page, worker, scale = 2, pageNum = 1, currentPage = 0, to
     }
     
     // OCR 识别
-    status(`OCR 识别第 ${pageNum} 页 (${currentPage + 1}/${totalPages})...`);
+    status(`OCR recognizing page ${pageNum} (${currentPage + 1}/${totalPages})...`);
     
     const { data: { text } } = await worker.recognize(canvas);
     
@@ -652,7 +657,7 @@ function binarizeCanvas(canvas, context) {
 // ===== 结果显示和处理 =====
 function displayResults() {
     if (rawResults.length === 0) {
-        elements.output.value = '没有识别到任何内容';
+        elements.output.value = 'No content recognized';
         return;
     }
     
@@ -667,7 +672,7 @@ function displayResults() {
     
     // 处理每页结果
     const processedTexts = rawResults.map(result => {
-        const header = `=== 第 ${result.pageNum} 页${result.isOCR ? ' (OCR)' : ''} ===`;
+        const header = `=== Page ${result.pageNum}${result.isOCR ? ' (OCR)' : ''} ===`;
         const text = processor.process(result.text);
         return `${header}\n${text}`;
     });
@@ -685,8 +690,8 @@ function updateTextStats() {
     const charCount = text.length;
     const wordCount = text.split(/\s+/).filter(word => word.length > 0).length;
     
-    elements.charCount.textContent = `${charCount} 字符`;
-    elements.wordCount.textContent = `${wordCount} 词`;
+    elements.charCount.textContent = `${charCount} characters`;
+    elements.wordCount.textContent = `${wordCount} words`;
 }
 
 // ===== 事件监听 =====
@@ -702,24 +707,24 @@ elements.output.addEventListener('input', updateTextStats);
 async function handleFileSelect(event) {
     const file = event.target.files[0];
     if (!file || file.type !== 'application/pdf') {
-        status('请选择有效的 PDF 文件');
+        status('Please select a valid PDF file');
         return;
     }
 
     processingFileName = file.name.replace(/\.pdf$/i, '');
-    elements.fileInfo.textContent = `已选择: ${file.name}`;
+    elements.fileInfo.textContent = `Selected: ${file.name}`;
     
     try {
         const arrayBuffer = await file.arrayBuffer();
         const loadingTask = pdfjsLib.getDocument({ data: arrayBuffer });
         currentPDF = await loadingTask.promise;
         
-        elements.fileInfo.textContent = `已选择: ${file.name} (${currentPDF.numPages} 页)`;
+        elements.fileInfo.textContent = `Selected: ${file.name} (${currentPDF.numPages} pages)`;
         elements.start.disabled = false;
-        status(`PDF 加载成功，共 ${currentPDF.numPages} 页`);
+        status(`PDF loaded successfully, ${currentPDF.numPages} pages total`);
     } catch (error) {
-        console.error('PDF 加载失败:', error);
-        status('PDF 加载失败，请检查文件是否损坏');
+        console.error('PDF loading failed:', error);
+        status('PDF loading failed, please check if the file is corrupted');
         currentPDF = null;
         elements.start.disabled = true;
     }
@@ -734,7 +739,7 @@ function handleBatchFileSelect(event) {
     batchProcessor.addFiles(files);
     
     elements.start.disabled = false;
-    status(`已选择 ${batchProcessor.queue.length} 个文件，准备批量处理`);
+    status(`Selected ${batchProcessor.queue.length} files, ready for batch processing`);
 }
 
 // ===== 主处理流程 =====
@@ -769,13 +774,13 @@ async function startSingleProcessing() {
     const pageRange = parsePages(elements.pages.value, currentPDF.numPages);
     
     if (pageRange.length === 0) {
-        status('未指定有效页码，将处理所有页面');
+        status('No valid page range specified, will process all pages');
         for (let i = 1; i <= currentPDF.numPages; i++) {
             pageRange.push(i);
         }
     }
     
-    status(`开始处理 ${pageRange.length} 页...`);
+    status(`Starting to process ${pageRange.length} pages...`);
     
     let worker = null;
     let processedPages = 0;
@@ -784,11 +789,11 @@ async function startSingleProcessing() {
         // 逐页处理
         for (const pageNum of pageRange) {
             if (abortFlag) {
-                status('处理已取消');
+                status('Processing cancelled');
                 break;
             }
             
-            status(`正在处理第 ${pageNum} 页 (${processedPages + 1}/${pageRange.length})...`);
+            status(`Processing page ${pageNum} (${processedPages + 1}/${pageRange.length})...`);
             
             try {
                 const page = await currentPDF.getPage(pageNum);
@@ -817,7 +822,7 @@ async function startSingleProcessing() {
                 
                 // 延迟创建 worker（仅在需要时）
                 if (!worker) {
-                    status('首次加载 OCR 语言包，请稍候...');
+                    status('Loading OCR language pack for the first time, please wait...');
                     worker = await createOCRWorker(lang);
                 }
                 
@@ -830,10 +835,10 @@ async function startSingleProcessing() {
                 });
                 
             } catch (pageError) {
-                console.error(`第 ${pageNum} 页处理失败:`, pageError);
+                console.error(`Page ${pageNum} processing failed:`, pageError);
                 rawResults.push({
                     pageNum,
-                    text: `[处理失败: ${pageError.message}]`,
+                    text: `[Processing failed: ${pageError.message}]`,
                     isOCR: false,
                     error: true
                 });
@@ -862,9 +867,9 @@ async function startSingleProcessing() {
         const elapsedTime = ((Date.now() - startTime) / 1000).toFixed(1);
         
         if (abortFlag) {
-            status(`处理已取消，完成 ${processedPages}/${pageRange.length} 页，耗时 ${elapsedTime} 秒`);
+            status(`Processing cancelled, completed ${processedPages}/${pageRange.length} pages, took ${elapsedTime} seconds`);
         } else {
-            status(`处理完成！共 ${processedPages} 页，耗时 ${elapsedTime} 秒`);
+            status(`Processing completed! Total ${processedPages} pages, took ${elapsedTime} seconds`);
         }
     }
 }
@@ -892,7 +897,7 @@ async function startBatchProcessing() {
         // 逐个处理文件
         while (await batchProcessor.processNext()) {
             if (abortFlag) {
-                status('批量处理已取消');
+                status('Batch processing cancelled');
                 break;
             }
         }
@@ -909,11 +914,11 @@ async function startBatchProcessing() {
         const elapsedTime = ((Date.now() - startTime) / 1000).toFixed(1);
         const successCount = results.filter(r => r.success).length;
         
-        status(`批量处理完成！成功 ${successCount}/${batchProcessor.queue.length} 个文件，耗时 ${elapsedTime} 秒`);
+        status(`Batch processing completed! Successfully processed ${successCount}/${batchProcessor.queue.length} files, took ${elapsedTime} seconds`);
         
     } catch (error) {
-        console.error('批量处理失败:', error);
-        status('批量处理失败: ' + error.message);
+        console.error('Batch processing failed:', error);
+        status('Batch processing failed: ' + error.message);
         
         elements.start.disabled = false;
         elements.cancel.disabled = true;
@@ -962,12 +967,12 @@ async function copyAll() {
     
     try {
         await navigator.clipboard.writeText(text);
-        showToast('已复制到剪贴板', 'success');
+        showToast('Copied to clipboard', 'success');
     } catch (err) {
         // 降级方案
         elements.output.select();
         document.execCommand('copy');
-        showToast('已复制到剪贴板', 'success');
+        showToast('Copied to clipboard', 'success');
     }
 }
 
@@ -1024,8 +1029,8 @@ function resetState() {
     
     setProgress(0, 100);
     updateTextStats();
-    status('等待选择文件...');
+    status('Waiting for file selection...');
 }
 
 // ===== 初始化 =====
-status('等待选择文件...');
+status('Waiting for file selection...');
