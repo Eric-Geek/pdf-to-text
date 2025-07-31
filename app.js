@@ -56,21 +56,22 @@ document.querySelectorAll('input[name="mode"]').forEach(radio => {
 });
 
 function updateUIMode() {
+    const pageRangeGroup = document.getElementById('page-range-group');
+    
     if (currentMode === 'batch') {
         document.getElementById('single-file-label').style.display = 'none';
         document.getElementById('batch-file-label').style.display = 'block';
         elements.batchList.style.display = 'block';
         elements.batchTabs.style.display = 'flex';
         elements.batchExportOption.style.display = 'block';
-        elements.pages.disabled = true;
-        elements.pages.value = '';
-        elements.pages.placeholder = 'Batch mode does not support page range';
+        pageRangeGroup.style.display = 'none';
     } else {
         document.getElementById('single-file-label').style.display = 'block';
         document.getElementById('batch-file-label').style.display = 'none';
         elements.batchList.style.display = 'none';
         elements.batchTabs.style.display = 'none';
         elements.batchExportOption.style.display = 'none';
+        pageRangeGroup.style.display = 'block';
         elements.pages.disabled = false;
         elements.pages.placeholder = 'e.g: 1-3,5,8';
     }
